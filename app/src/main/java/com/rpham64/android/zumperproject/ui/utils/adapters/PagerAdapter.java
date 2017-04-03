@@ -1,4 +1,4 @@
-package com.rpham64.android.zumperproject.ui.adapters;
+package com.rpham64.android.zumperproject.ui.utils.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.rpham64.android.zumperproject.ui.list.ListFragment;
 import com.rpham64.android.zumperproject.ui.map.MapFragment;
 
-import static com.rpham64.android.zumperproject.ui.adapters.PagerAdapter.Pages.LIST;
-import static com.rpham64.android.zumperproject.ui.adapters.PagerAdapter.Pages.MAP;
+import static com.rpham64.android.zumperproject.ui.utils.adapters.PagerAdapter.Pages.LIST;
+import static com.rpham64.android.zumperproject.ui.utils.adapters.PagerAdapter.Pages.MAP;
 
 /**
  * Created by Rudolf on 4/2/2017.

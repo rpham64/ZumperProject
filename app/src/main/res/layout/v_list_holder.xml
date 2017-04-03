@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:padding="16dp"
     >
 
@@ -14,7 +14,7 @@
         android:textSize="20sp"
         app:minTextSize="14sp"
         android:maxLines="2"
-        android:hint="QWRQWIRQIOWRBIQOWBRIQWIORQWIOBROQIWBROIQWBORQBWIORBQWOI"
+        android:hint="QWRQWIRQIOWRBIQOWBRIQWIORQWIOBROQIW"
         />
 
     <ImageView
@@ -25,15 +25,13 @@
         android:layout_alignParentRight="true"
         />
 
-    <TextView
+    <RatingBar
         android:id="@+id/text_restaurant_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_below="@+id/text_restaurant_name"
-        android:layout_alignParentStart="true"
-        android:hint="3.1415926535"
-        android:layout_toStartOf="@+id/img_restaurant_photo"
+        android:layout_below="@id/text_restaurant_name"
+        android:numStars="5"
+        style="?android:attr/ratingBarStyleSmall"
         />
 
 </RelativeLayout>

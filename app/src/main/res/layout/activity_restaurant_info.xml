@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+    >
+
+    <ImageView
+        android:id="@+id/img_restaurant_info_photo"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="@android:color/black"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/text_restaurant_info_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_restaurant_info_photo"
+        android:layout_marginTop="8dp"
+        android:textSize="24sp"
+        android:hint="@string/hint_restaurant_name"
+        />
+
+    <TextView
+        android:id="@+id/text_restaurant_info_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_restaurant_info_name"
+        android:layout_marginTop="8dp"
+        android:hint="@string/hint_restaurant_address"
+        />
+
+    <TextView
+        android:id="@+id/text_restaurant_info_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_restaurant_info_address"
+        android:layout_marginTop="8dp"
+        android:hint="@string/hint_restaurant_contact_info"
+        />
+
+    <RatingBar
+        android:id="@+id/text_restaurant_info_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_restaurant_info_contact"
+        android:layout_marginTop="8dp"
+        android:numStars="5"
+        style="?android:attr/ratingBarStyleSmall"
+        />
+
+    <!-- List of Reviews -->
+    <include
+        android:id="@+id/layout_review"
+        layout="@layout/v_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_restaurant_info_rating"
+        android:layout_marginTop="24dp"
+        />
+
+</RelativeLayout>

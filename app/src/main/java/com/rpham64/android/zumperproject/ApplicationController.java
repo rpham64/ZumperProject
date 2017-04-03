@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rpham64.android.zumperproject.network.RestClient;
+import com.rpham64.android.zumperproject.ui.utils.SFCoordinates;
 
 import java.io.IOException;
 
@@ -22,10 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApplicationController extends Application {
 
-    // Coordinates for San Francisco, California
-    public static final String LATITUDE = "37.773972";
-    public static final String LONGITUDE = "-122.431297";
-
     // Search radius
     public static final String RADIUS = "500";
 
@@ -40,7 +37,11 @@ public class ApplicationController extends Application {
         sInstance = this;
         Stetho.initializeWithDefaults(this);
 
-        final String location = LATITUDE + "," + LONGITUDE;
+        final String location = new StringBuilder()
+                .append(SFCoordinates.LATITUDE)
+                .append(",")
+                .append(SFCoordinates.LONGITUDE)
+                .toString();
 
         mOkHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())

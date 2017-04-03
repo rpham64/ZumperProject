@@ -3,9 +3,6 @@ package com.rpham64.android.zumperproject.ui.utils;
 import com.rpham64.android.zumperproject.ApplicationController;
 import com.rpham64.android.zumperproject.network.RestClient;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
-
 /**
  * Created by Rudolf on 4/2/2017.
  */
@@ -13,7 +10,6 @@ import rx.subscriptions.CompositeSubscription;
 public class BasePresenter<T> implements IPresenter<T> {
 
     private T mView;
-    private CompositeSubscription mSubs = new CompositeSubscription();
 
     public BasePresenter() {
 
@@ -42,13 +38,6 @@ public class BasePresenter<T> implements IPresenter<T> {
     @Override
     public void onDestroy() {
         mView = null;
-
-        if (mSubs != null) mSubs.unsubscribe();
-    }
-
-    @Override
-    public void addSubscription(Subscription sub) {
-        mSubs.add(sub);
     }
 
     @Override

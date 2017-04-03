@@ -32,13 +32,6 @@ public class ListPresenter extends BasePresenter<ListPresenter.View> {
         call.enqueue(new Callback<RestaurantsResponse>() {
             @Override
             public void onResponse(Call<RestaurantsResponse> call, Response<RestaurantsResponse> response) {
-
-                List<Restaurant> restaurants = response.body().restaurants;
-
-                for (Restaurant restaurant : restaurants) {
-                    Log.i(TAG, "Restaurant: " + restaurant.name);
-                }
-
                 getView().showRestaurants(response.body().restaurants);
             }
 

@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.rpham64.android.zumperproject.R;
-import com.rpham64.android.zumperproject.ui.adapters.PagerAdapter;
+import com.rpham64.android.zumperproject.ui.utils.adapters.PagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

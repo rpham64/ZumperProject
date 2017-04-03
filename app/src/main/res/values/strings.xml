@@ -7,5 +7,12 @@
     // TextView Strings
     <string name="text_restaurant_name">Some kind of restaurant name here</string>
     <string name="text_restaurant_rating">This is the restaurant\'s rating out of 5</string>
+    <string name="hint_restaurant_name">Restaurant Name</string>
+    <string name="hint_restaurant_address">Restaurant Address</string>
+    <string name="hint_restaurant_contact_info">Restaurant Contact Info</string>
+    <string name="hint_restaurant_rating">Restaurant Rating</string>
+    <string name="hint_review_author">Review\'s Author</string>
+    <string name="hint_review_time">Review Time</string>
+    <string name="hint_review_text">Review Text</string>
 
 </resources>

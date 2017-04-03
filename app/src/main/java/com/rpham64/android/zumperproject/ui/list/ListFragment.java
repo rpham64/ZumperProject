@@ -6,14 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rpham64.android.zumperproject.R;
 import com.rpham64.android.zumperproject.models.Restaurant;
-import com.rpham64.android.zumperproject.ui.adapters.ListAdapter;
+import com.rpham64.android.zumperproject.ui.utils.adapters.ListAdapter;
 
 import java.util.List;
 
@@ -34,8 +33,6 @@ public class ListFragment extends Fragment implements ListPresenter.View {
     private Unbinder mUnbinder;
     private ListPresenter mPresenter;
     private ListAdapter mAdapter;
-
-    private List<Restaurant> mRestaurants;
 
     public static ListFragment newInstance() {
         return new ListFragment();
@@ -74,10 +71,5 @@ public class ListFragment extends Fragment implements ListPresenter.View {
             mAdapter = new ListAdapter(getContext(), restaurants);
             recyclerView.setAdapter(mAdapter);
         }
-
-        for (Restaurant restaurant : restaurants) {
-            Log.i(TAG, "Restaurant: " + restaurant.name);
-        }
-
     }
 }
