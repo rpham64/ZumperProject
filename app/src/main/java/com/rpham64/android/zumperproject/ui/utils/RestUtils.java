@@ -9,7 +9,7 @@ import android.net.Uri;
 public class RestUtils {
 
     public static final String API_KEY = "AIzaSyB-bpw0ollWA5AKpT11Y2CL2qPFs4kC_dk";
-    public static final String PHOTO_URL = "https://maps.googleapis.com/maps/api/place/";
+    public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
     public static final String MAX_WIDTH = "200";
 
     public static final String PHOTO_PATH = "photo";
@@ -28,7 +28,7 @@ public class RestUtils {
 
         // TODO: Create database and store url, if time
 
-        Uri photoUri = Uri.parse(PHOTO_URL)
+        Uri photoUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath(PHOTO_PATH)
                 .appendQueryParameter(MAX_WIDTH_PARAM, MAX_WIDTH)
@@ -38,6 +38,5 @@ public class RestUtils {
 
         return photoUri.toString();
     }
-
 
 }

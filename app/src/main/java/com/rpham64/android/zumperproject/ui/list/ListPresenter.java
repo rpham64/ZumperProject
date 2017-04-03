@@ -1,7 +1,6 @@
 package com.rpham64.android.zumperproject.ui.list;
 
-import android.util.Log;
-
+import com.orhanobut.logger.Logger;
 import com.rpham64.android.zumperproject.models.Restaurant;
 import com.rpham64.android.zumperproject.network.response.RestaurantsResponse;
 import com.rpham64.android.zumperproject.ui.utils.BasePresenter;
@@ -26,7 +25,7 @@ public class ListPresenter extends BasePresenter<ListPresenter.View> {
     /**
      * Fetches data from Google Places API
      */
-    public void fetch() {
+    public void fetchRestaurants() {
 
         Call<RestaurantsResponse> call = getRestClient().getRestaurants();
         call.enqueue(new Callback<RestaurantsResponse>() {
@@ -38,7 +37,7 @@ public class ListPresenter extends BasePresenter<ListPresenter.View> {
             @Override
             public void onFailure(Call<RestaurantsResponse> call, Throwable t) {
                 t.printStackTrace();
-                Log.e(TAG, "Something broke in ListPresenter#fetch", t);
+                Logger.d(t);
             }
         });
 

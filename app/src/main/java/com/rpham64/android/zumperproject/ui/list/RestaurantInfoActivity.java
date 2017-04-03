@@ -13,9 +13,8 @@ import com.rpham64.android.zumperproject.R;
 import com.rpham64.android.zumperproject.models.Restaurant;
 import com.rpham64.android.zumperproject.models.Review;
 import com.rpham64.android.zumperproject.ui.utils.RestUtils;
+import com.rpham64.android.zumperproject.ui.utils.TimeUtils;
 import com.squareup.picasso.Picasso;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by Rudolf on 4/2/2017.
  */
 
-public class RestaurantInfoActivity extends AppCompatActivity {
+public class RestaurantInfoActivity extends AppCompatActivity implements RestaurantInfoPresenter.View {
 
     private static final String TAG = RestaurantInfoActivity.class.getName();
 
@@ -51,11 +50,13 @@ public class RestaurantInfoActivity extends AppCompatActivity {
     @BindView(R.id.review_rating) RatingBar barRatingReview;
     @BindView(R.id.review_text) TextView txtReview;
 
+    private RestaurantInfoPresenter mPresenter;
+
     private Restaurant mRestaurant;
 
     public static void startRestaurantInfoActivity(Context context, Restaurant restaurant) {
         Intent intent = new Intent(context, RestaurantInfoActivity.class);
-        intent.putExtra(Extras.RESTAURANT, Parcels.wrap(restaurant));
+        intent.putExtra(Extras.RESTAURANT, restaurant);
         context.startActivity(intent);
     }
 
@@ -65,15 +66,18 @@ public class RestaurantInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_info);
         ButterKnife.bind(this);
 
+        mPresenter = new RestaurantInfoPresenter();
+        mPresenter.attachView(this);
+
         if (getIntent() != null) {
-            mRestaurant = Parcels.unwrap(getIntent().getParcelableExtra(Extras.RESTAURANT));
+            mRestaurant = getIntent().getParcelableExtra(Extras.RESTAURANT);
         }
 
-        showInfo(mRestaurant);
+        mPresenter.fetchDetails(mRestaurant.placeId);
     }
 
+    @Override
     public void showInfo(Restaurant restaurant) {
-
         String photoReference = restaurant.photos.get(0).reference;
         String photoUrl = RestUtils.fetchPhotoUrl(photoReference);
 
@@ -83,7 +87,7 @@ public class RestaurantInfoActivity extends AppCompatActivity {
 
         txtName.setText(restaurant.name);
         txtAddress.setText(restaurant.address);
-        txtContact.setText(restaurant.website);
+        txtContact.setText(restaurant.phoneNumber);
         barRating.setRating(restaurant.rating);
 
         // TODO: Create list of reviews, if time
@@ -91,7 +95,7 @@ public class RestaurantInfoActivity extends AppCompatActivity {
             Review review = restaurant.reviews.get(0);
 
             txtReviewAuthor.setText(review.authorName);
-            txtReviewTime.setText(String.valueOf(review.time));
+            txtReviewTime.setText(TimeUtils.getDate(review.time));
             barRatingReview.setRating(review.rating);
             txtReview.setText(review.text);
         }

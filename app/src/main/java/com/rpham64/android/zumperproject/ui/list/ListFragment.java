@@ -43,7 +43,7 @@ public class ListFragment extends Fragment implements ListPresenter.View {
         super.onCreate(savedInstanceState);
 
         mPresenter = new ListPresenter();
-        mPresenter.fetch();
+        mPresenter.fetchRestaurants();
     }
 
     @Nullable

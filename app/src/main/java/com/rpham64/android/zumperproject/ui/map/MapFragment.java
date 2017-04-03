@@ -13,11 +13,14 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rpham64.android.zumperproject.R;
 import com.rpham64.android.zumperproject.models.Restaurant;
 import com.rpham64.android.zumperproject.ui.utils.SFCoordinates;
+import com.rpham64.android.zumperproject.ui.utils.adapters.CustomInfoWindowAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,7 +31,7 @@ import butterknife.Unbinder;
  * Created by Rudolf on 4/2/2017.
  */
 
-public class MapFragment extends Fragment implements MapPresenter.View, OnMapReadyCallback {
+public class MapFragment extends Fragment implements MapPresenter.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = MapFragment.class.getName();
 
@@ -37,9 +40,17 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     private Unbinder mUnbinder;
     private MapPresenter mPresenter;
 
+    private CustomInfoWindowAdapter mWindowAdapter;
     private GoogleMap mMap;
 
+    // For keeping track of marker's restaurant position in mRestaurants
+    private HashMap<Marker, Integer> mHashMap = new HashMap<>();
+
+    // List of Restaurants
     private List<Restaurant> mRestaurants;
+
+    // Clicked/Current restaurant (for displaying info)
+    private Restaurant mRestaurant;
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -50,7 +61,9 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
         super.onCreate(savedInstanceState);
 
         mPresenter = new MapPresenter();
-        mPresenter.fetch();
+        mPresenter.fetchRestaurants();
+
+        mWindowAdapter = new CustomInfoWindowAdapter(getContext());
     }
 
     @Nullable
@@ -73,14 +86,14 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         viewMap.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         mUnbinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
@@ -98,36 +111,51 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     }
 
     @Override
+    public void showDetails(Restaurant restaurant) {
+        mRestaurant = restaurant;
+    }
+
+    @Override
     public void onMapReady(GoogleMap map) {
 
-        setupMap(map);
+        mMap = map;
 
-        for (Restaurant restaurant : mRestaurants) {
+        addMarkersToMap();
+        setupMap();
+    }
 
+    private void addMarkersToMap() {
+        for (int i = 0; i < mRestaurants.size(); ++i) {
+
+            Restaurant restaurant = mRestaurants.get(i);
             double latitude = restaurant.geometry.location.latitude;
             double longitude = restaurant.geometry.location.longitude;
 
-            MarkerOptions marker = new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .title(restaurant.name)
-                    .snippet("Address: " + restaurant.address)
-                    .snippet("Contact: " + restaurant.website)
-                    .snippet("Rating: " + restaurant.rating);
+            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude));
 
-            map.addMarker(marker);
+            Marker marker = mMap.addMarker(markerOptions);
+            mHashMap.put(marker, i);
         }
     }
 
-    private void setupMap(GoogleMap map) {
+    private void setupMap() {
         double sfLatitude = Double.valueOf(SFCoordinates.LATITUDE);
         double sfLongitude = Double.valueOf(SFCoordinates.LONGITUDE);
 
-        mMap = map;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setInfoWindowAdapter(mWindowAdapter);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(sfLatitude, sfLongitude)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sfLatitude, sfLongitude), 15));
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        int position = mHashMap.get(marker);
+        mWindowAdapter.setRestaurant(mRestaurants.get(position));
+        return false;
     }
 }

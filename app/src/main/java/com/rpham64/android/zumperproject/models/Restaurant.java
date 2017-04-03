@@ -20,12 +20,18 @@ public class Restaurant implements Parcelable {
 
     public final String id;
 
+    @SerializedName("place_id")
+    public final String placeId;
+
     @NonNull
     public final String name;
 
     @SerializedName("vicinity")
     @NonNull
     public final String address;
+
+    @SerializedName("international_phone_number")
+    public final String phoneNumber;
 
     public final List<Photo> photos;
 
@@ -37,34 +43,14 @@ public class Restaurant implements Parcelable {
 
     public final String website;
 
-    public Restaurant(Geometry geometry,
-                      String icon,
-                      String id,
-                      @NonNull String name,
-                      @NonNull String address,
-                      List<Photo> photos,
-                      float rating,
-                      String url,
-                      List<Review> reviews,
-                      String website) {
-        this.geometry = geometry;
-        this.icon = icon;
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.photos = photos;
-        this.rating = rating;
-        this.url = url;
-        this.reviews = reviews;
-        this.website = website;
-    }
-
     protected Restaurant(Parcel in) {
         geometry = (Geometry) in.readValue(Geometry.class.getClassLoader());
         icon = in.readString();
         id = in.readString();
+        placeId = in.readString();
         name = in.readString();
         address = in.readString();
+        phoneNumber = in.readString();
         if (in.readByte() == 0x01) {
             photos = new ArrayList<Photo>();
             in.readList(photos, Photo.class.getClassLoader());
@@ -92,8 +78,10 @@ public class Restaurant implements Parcelable {
         dest.writeValue(geometry);
         dest.writeString(icon);
         dest.writeString(id);
+        dest.writeString(placeId);
         dest.writeString(name);
         dest.writeString(address);
+        dest.writeString(phoneNumber);
         if (photos == null) {
             dest.writeByte((byte) (0x00));
         } else {
