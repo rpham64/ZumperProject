@@ -3,6 +3,7 @@ package com.rpham64.android.zumperproject.ui.map;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,13 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
 
     @Override
     public void onDestroy() {
-        viewMap.onDestroy();
+        if (viewMap != null) {
+            try {
+                viewMap.onDestroy();
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error while attempting MapView.onDestroy(), ignoring exception", e);
+            }
+        }
         super.onDestroy();
     }
 
@@ -99,7 +106,9 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        viewMap.onLowMemory();
+        if (viewMap != null) {
+            viewMap.onLowMemory();
+        }
     }
 
     @Override
