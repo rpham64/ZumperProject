@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -23,12 +22,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApplicationController extends Application {
 
-    public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-
     // Coordinates for San Francisco, California
     public static final String LATITUDE = "37.773972";
     public static final String LONGITUDE = "-122.431297";
 
+    // Search radius
     public static final String RADIUS = "500";
 
     private static ApplicationController sInstance;
@@ -67,9 +65,8 @@ public class ApplicationController extends Application {
         if (mRestClient == null) {
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(getString(R.string.google_places_url))
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(mOkHttpClient)
                     .build();
 

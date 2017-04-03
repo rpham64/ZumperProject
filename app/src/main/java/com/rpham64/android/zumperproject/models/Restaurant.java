@@ -12,6 +12,12 @@ import java.util.List;
 
 public class Restaurant {
 
+    public final Geometry geometry;
+
+    public final String icon;
+
+    public final String id;
+
     @NonNull
     public final String name;
 
@@ -21,7 +27,7 @@ public class Restaurant {
 
     public final List<Photo> photos;
 
-    public final int rating;
+    public final float rating;
 
     public final String url;
 
@@ -29,13 +35,19 @@ public class Restaurant {
 
     public final String website;
 
-    public Restaurant(String name,
-                      String address,
+    public Restaurant(Geometry geometry,
+                      String icon,
+                      String id,
+                      @NonNull String name,
+                      @NonNull String address,
                       List<Photo> photos,
-                      int rating,
+                      float rating,
                       String url,
                       List<Review> reviews,
                       String website) {
+        this.geometry = geometry;
+        this.icon = icon;
+        this.id = id;
         this.name = name;
         this.address = address;
         this.photos = photos;

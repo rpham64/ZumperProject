@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:padding="16dp"
+    >
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/text_restaurant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/img_restaurant_photo"
+        android:textSize="20sp"
+        app:minTextSize="14sp"
+        android:maxLines="2"
+        android:hint="QWRQWIRQIOWRBIQOWBRIQWIORQWIOBROQIWBROIQWBORQBWIORBQWOI"
+        />
+
+    <ImageView
+        android:id="@+id/img_restaurant_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:id="@+id/text_restaurant_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_below="@+id/text_restaurant_name"
+        android:layout_alignParentStart="true"
+        android:hint="3.1415926535"
+        android:layout_toStartOf="@+id/img_restaurant_photo"
+        />
+
+</RelativeLayout>

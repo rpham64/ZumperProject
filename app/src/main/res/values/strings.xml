@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ZumperProject</string>
+    
+    // Base Url
+    <string name="google_places_url">https://maps.googleapis.com/maps/api/place/</string>
+    
+    // TextView Strings
+    <string name="text_restaurant_name">Some kind of restaurant name here</string>
+    <string name="text_restaurant_rating">This is the restaurant\'s rating out of 5</string>
+
 </resources>

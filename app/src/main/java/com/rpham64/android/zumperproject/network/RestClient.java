@@ -2,6 +2,7 @@ package com.rpham64.android.zumperproject.network;
 
 import com.rpham64.android.zumperproject.network.response.RestaurantsResponse;
 
+import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**
@@ -10,7 +11,6 @@ import retrofit2.http.GET;
 
 public interface RestClient {
 
-    @GET("type=restaurant")
-    RestaurantsResponse getRestaurants();
-
+    @GET("nearbysearch/json?type=restaurant")
+    Call<RestaurantsResponse> getRestaurants();
 }

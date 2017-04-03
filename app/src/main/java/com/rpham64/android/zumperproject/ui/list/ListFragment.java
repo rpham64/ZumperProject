@@ -5,12 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.rpham64.android.zumperproject.R;
+import com.rpham64.android.zumperproject.models.Restaurant;
+import com.rpham64.android.zumperproject.ui.adapters.ListAdapter;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,14 +25,17 @@ import butterknife.Unbinder;
  * Created by Rudolf on 4/2/2017.
  */
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ListPresenter.View {
 
     private static final String TAG = ListFragment.class.getName();
 
-    @BindView(R.id.list_recycler_view) UltimateRecyclerView listRestaurants;
+    @BindView(R.id.list_recycler_view) RecyclerView recyclerView;
 
     private Unbinder mUnbinder;
     private ListPresenter mPresenter;
+    private ListAdapter mAdapter;
+
+    private List<Restaurant> mRestaurants;
 
     public static ListFragment newInstance() {
         return new ListFragment();
@@ -36,6 +44,9 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPresenter = new ListPresenter();
+        mPresenter.fetch();
     }
 
     @Nullable
@@ -43,16 +54,9 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        mPresenter.attachView(this);
 
-        listRestaurants.setLayoutManager(new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false));
-        listRestaurants.reenableLoadmore();
-        listRestaurants.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void loadMore(int itemsCount, int maxLastVisiblePosition) {
-
-                // Pagination
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), OrientationHelper.VERTICAL, false));
 
         return view;
     }
@@ -61,5 +65,19 @@ public class ListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void showRestaurants(List<Restaurant> restaurants) {
+
+        if (isAdded() && mAdapter == null) {
+            mAdapter = new ListAdapter(getContext(), restaurants);
+            recyclerView.setAdapter(mAdapter);
+        }
+
+        for (Restaurant restaurant : restaurants) {
+            Log.i(TAG, "Restaurant: " + restaurant.name);
+        }
+
     }
 }
