@@ -28,10 +28,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * Created by Rudolf on 4/2/2017.
- */
-
 public class MapFragment extends Fragment implements MapPresenter.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = MapFragment.class.getName();
@@ -44,14 +40,17 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     private CustomInfoWindowAdapter mWindowAdapter;
     private GoogleMap mMap;
 
+    // Coordinates
+    private LatLng mCoordinates;
+    private double mLatitude;
+    private double mLongitude;
+    private String mLocation;
+
     // For keeping track of marker's restaurant position in mRestaurants
-    private HashMap<Marker, Integer> mHashMap = new HashMap<>();
+    private HashMap<Marker, Restaurant> mHashMap = new HashMap<>();
 
     // List of Restaurants
     private List<Restaurant> mRestaurants;
-
-    // Clicked/Current restaurant (for displaying info)
-    private Restaurant mRestaurant;
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -61,8 +60,13 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mLatitude = Double.valueOf(SFCoordinates.LATITUDE);
+        mLongitude = Double.valueOf(SFCoordinates.LONGITUDE);
+
+        mLocation = mLatitude + "," + mLongitude;
+
         mPresenter = new MapPresenter();
-        mPresenter.fetchRestaurants();
+        mPresenter.fetchRestaurants(mLocation);
 
         mWindowAdapter = new CustomInfoWindowAdapter(getContext());
     }
@@ -116,12 +120,16 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
         mRestaurants = restaurants;
 
         // Only start map after retrieving list of restaurants
-        viewMap.getMapAsync(this);
+        if (mMap == null) {
+            viewMap.getMapAsync(this);
+        } else {
+            addMarkersToMap();
+        }
     }
 
     @Override
     public void showDetails(Restaurant restaurant) {
-        mRestaurant = restaurant;
+
     }
 
     @Override
@@ -134,6 +142,7 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
     }
 
     private void addMarkersToMap() {
+
         for (int i = 0; i < mRestaurants.size(); ++i) {
 
             Restaurant restaurant = mRestaurants.get(i);
@@ -143,7 +152,7 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude));
 
             Marker marker = mMap.addMarker(markerOptions);
-            mHashMap.put(marker, i);
+            mHashMap.put(marker, restaurant);
         }
     }
 
@@ -154,6 +163,20 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setOnMarkerClickListener(this);
         mMap.setInfoWindowAdapter(mWindowAdapter);
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                mCoordinates = mMap.getCameraPosition().target;
+
+                mLatitude = mCoordinates.latitude;
+                mLongitude = mCoordinates.longitude;
+
+                mLocation = mLatitude + "," + mLongitude;
+
+                // Call request with new coordinates
+                mPresenter.fetchRestaurants(mLocation);
+            }
+        });
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -163,8 +186,7 @@ public class MapFragment extends Fragment implements MapPresenter.View, OnMapRea
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        int position = mHashMap.get(marker);
-        mWindowAdapter.setRestaurant(mRestaurants.get(position));
+        mWindowAdapter.setRestaurant(mHashMap.get(marker));
         return false;
     }
 }

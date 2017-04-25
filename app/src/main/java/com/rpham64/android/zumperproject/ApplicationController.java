@@ -50,7 +50,7 @@ public class ApplicationController extends Application {
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         HttpUrl url = request.url().newBuilder()
-                                .addQueryParameter("key", getString(R.string.google_places_key))
+                                .addQueryParameter("key", getString(R.string.google_places_key2))
                                 .addQueryParameter("location", location)
                                 .addQueryParameter("radius", RADIUS)
                                 .build();

@@ -22,18 +22,22 @@ public class MapPresenter extends BasePresenter<MapPresenter.View> {
 
     private static final String TAG = MapPresenter.class.getName();
 
+    private String nextPageToken;
+
     public MapPresenter() {
+        nextPageToken = "";
     }
 
     /**
      * Fetches data from Google Places API
      */
-    public void fetchRestaurants() {
+    public void fetchRestaurants(String location) {
 
-        Call<RestaurantsResponse> call = getRestClient().getRestaurants();
+        Call<RestaurantsResponse> call = getRestClient().getRestaurants(nextPageToken, location);
         call.enqueue(new Callback<RestaurantsResponse>() {
             @Override
             public void onResponse(Call<RestaurantsResponse> call, Response<RestaurantsResponse> response) {
+                nextPageToken = response.body().nextPageToken;
                 getView().showRestaurants(response.body().restaurants);
             }
 

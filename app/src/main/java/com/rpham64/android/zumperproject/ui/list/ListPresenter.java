@@ -1,5 +1,7 @@
 package com.rpham64.android.zumperproject.ui.list;
 
+import android.util.Log;
+
 import com.orhanobut.logger.Logger;
 import com.rpham64.android.zumperproject.models.Restaurant;
 import com.rpham64.android.zumperproject.network.response.RestaurantsResponse;
@@ -19,28 +21,35 @@ public class ListPresenter extends BasePresenter<ListPresenter.View> {
 
     private static final String TAG = ListPresenter.class.getName();
 
+    private String nextPageToken;
+
     public ListPresenter() {
+        nextPageToken = "";
     }
 
     /**
      * Fetches data from Google Places API
      */
     public void fetchRestaurants() {
+        if (nextPageToken != null) {
+            Call<RestaurantsResponse> call = getRestClient().getRestaurants(nextPageToken);
+            call.enqueue(new Callback<RestaurantsResponse>() {
+                @Override
+                public void onResponse(Call<RestaurantsResponse> call, Response<RestaurantsResponse> response) {
+                    nextPageToken = response.body().nextPageToken;
 
-        Call<RestaurantsResponse> call = getRestClient().getRestaurants();
-        call.enqueue(new Callback<RestaurantsResponse>() {
-            @Override
-            public void onResponse(Call<RestaurantsResponse> call, Response<RestaurantsResponse> response) {
-                getView().showRestaurants(response.body().restaurants);
-            }
+                    Log.i(TAG, "Token: " + nextPageToken);
 
-            @Override
-            public void onFailure(Call<RestaurantsResponse> call, Throwable t) {
-                t.printStackTrace();
-                Logger.d(t);
-            }
-        });
+                    getView().showRestaurants(response.body().restaurants);
+                }
 
+                @Override
+                public void onFailure(Call<RestaurantsResponse> call, Throwable t) {
+                    t.printStackTrace();
+                    Logger.d(t);
+                }
+            });
+        }
     }
 
     public interface View {

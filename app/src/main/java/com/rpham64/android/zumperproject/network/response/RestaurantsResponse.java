@@ -11,6 +11,7 @@ import java.util.List;
 
 public class RestaurantsResponse {
 
+    @SerializedName("next_page_token")
     public final String nextPageToken;
 
     @SerializedName("results")

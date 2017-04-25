@@ -14,7 +14,10 @@ import retrofit2.http.Query;
 public interface RestClient {
 
     @GET("nearbysearch/json?type=restaurant")
-    Call<RestaurantsResponse> getRestaurants();
+    Call<RestaurantsResponse> getRestaurants(@Query("pagetoken") String nextPageToken);
+
+    @GET("nearbysearch/json?type=restaurant")
+    Call<RestaurantsResponse> getRestaurants(@Query("pagetoken") String nextPageToken, @Query("location") String location);
 
     @GET("details/json?")
     Call<DetailsResponse> getRestaurantDetailsWithId(@Query("placeid") String placeId);

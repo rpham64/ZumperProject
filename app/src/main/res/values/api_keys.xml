@@ -3,6 +3,7 @@
 
     <!-- Key for Google Places API requests made over HTTP -->
     <string name="google_places_key">AIzaSyB-bpw0ollWA5AKpT11Y2CL2qPFs4kC_dk</string>
+    <string name="google_places_key2">AIzaSyC4DHhfS76zxDtGMRta4lExGTvSiIDKxJE</string>
 
     <!-- Key for native Google Maps HTTP Requests -->
     <string name="google_maps_key">AIzaSyBt08WxEypilTzyi2fQBm9OBIgzSt3uk2g</string>
